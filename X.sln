@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FW1FontWrapper", "X\External\FW1FontWrapper\FW1FontWrapper.vcxproj", "{0D034612-14E2-44E7-993A-72344A2CA7BD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VGP332", "VGP332", "{FA607CA0-A7E8-416E-A86F-4629364835F8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloPathfinding", "VGP332\HelloPathfinding\HelloPathfinding.vcxproj", "{6791AD84-667B-43A1-8A58-6BC083942439}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -65,6 +69,14 @@ Global
 		{0D034612-14E2-44E7-993A-72344A2CA7BD}.Release|x64.Build.0 = Release|x64
 		{0D034612-14E2-44E7-993A-72344A2CA7BD}.Release|x86.ActiveCfg = Release|Win32
 		{0D034612-14E2-44E7-993A-72344A2CA7BD}.Release|x86.Build.0 = Release|Win32
+		{6791AD84-667B-43A1-8A58-6BC083942439}.Debug|x64.ActiveCfg = Debug|x64
+		{6791AD84-667B-43A1-8A58-6BC083942439}.Debug|x64.Build.0 = Debug|x64
+		{6791AD84-667B-43A1-8A58-6BC083942439}.Debug|x86.ActiveCfg = Debug|Win32
+		{6791AD84-667B-43A1-8A58-6BC083942439}.Debug|x86.Build.0 = Debug|Win32
+		{6791AD84-667B-43A1-8A58-6BC083942439}.Release|x64.ActiveCfg = Release|x64
+		{6791AD84-667B-43A1-8A58-6BC083942439}.Release|x64.Build.0 = Release|x64
+		{6791AD84-667B-43A1-8A58-6BC083942439}.Release|x86.ActiveCfg = Release|Win32
+		{6791AD84-667B-43A1-8A58-6BC083942439}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +87,7 @@ Global
 		{BFF9C813-01AF-43B3-A23E-2C62F332B994} = {856ED680-E9A4-400F-ADFF-D3C492DCA608}
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5} = {856ED680-E9A4-400F-ADFF-D3C492DCA608}
 		{0D034612-14E2-44E7-993A-72344A2CA7BD} = {856ED680-E9A4-400F-ADFF-D3C492DCA608}
+		{6791AD84-667B-43A1-8A58-6BC083942439} = {FA607CA0-A7E8-416E-A86F-4629364835F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D84BED7-7031-4090-B4D3-57A9E4C0998B}
@@ -82,11 +95,11 @@ Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 1
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://ptychan.visualstudio.com/
+		SccTeamFoundationServer = https://chong921130.visualstudio.com/
 		SccProjectUniqueName0 = X\\External\\ImGui\\ImGui.vcxproj
 		SccProjectTopLevelParentUniqueName0 = X.sln
 		SccProjectName0 = X/External/ImGui
-		SccAuxPath0 = https://ptychan.visualstudio.com
+		SccAuxPath0 = https://chong921130.visualstudio.com
 		SccLocalPath0 = X\\External\\ImGui
 		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
