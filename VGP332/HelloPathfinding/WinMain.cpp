@@ -1,17 +1,22 @@
 #include<XEngine.h>
+#include"TileMap.h"
+
+TileMap tileMap;
 
 void GameInit()
 {
-
+	tileMap.Load();
 }
 
 void GameCleanup()
 {
-
+	tileMap.Unload();
 }
 
 bool GameLoop(float deltaTime)
 {
+	tileMap.Update(deltaTime);
+	tileMap.Render();
 	return X::IsKeyPressed(X::Keys::ESCAPE);
 }
 
