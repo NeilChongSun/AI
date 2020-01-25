@@ -32,10 +32,10 @@ void TileMap::Update(float deltaTime)
 	{
 		if (X::IsMousePressed(X::Mouse::LBUTTON))
 		{
-			mTiles[i] = 1;
+			//mTiles[i] = 1;
+			mNode = mGraph.GetNode(AI::Coord{ column,row });
 		}
-	}
-	
+	}	
 }
 
 void TileMap::Render() const

@@ -15,8 +15,7 @@ namespace AI
 		};
 
 		inline void Resize(int columns, int rows);
-		Node* GetNode(Coord coord) { int index = GetIndex(coord); return &mNodes[index]; }
-
+		Node* GetNode(Coord coord); 
 		int GetColumns()const { return mColumns; }
 		int GetRows()const { return mRows; }
 	private:
@@ -109,10 +108,12 @@ namespace AI
 			}
 		}
 	}
-	//Graph::Node* GetNode(Coord coord)
-	//{
-	//	//Homework: Do bound check, then either return & of node, or nullptr
-	//}
+	Graph::Node* Graph::GetNode(Coord coord)
+	{
+		//Homework: Do bound check, then either return & of node, or nullptr
+		int index = GetIndex(coord);
+		return &mNodes[index];
+	}
 
 	int Graph::GetIndex(Coord coord)const
 	{
