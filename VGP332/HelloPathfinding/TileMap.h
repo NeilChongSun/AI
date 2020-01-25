@@ -18,4 +18,5 @@ private:
 	int mTileSize = 32;
 	AI::Graph mGraph;
 	AI::Graph::Node* mNode;
+	std::vector<AI::Graph::Node> mNodes;
 };
