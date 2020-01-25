@@ -1,5 +1,4 @@
 #include "TileMap.h"
-
 void TileMap::Load()
 {
 	mTextureIds[0] = X::LoadTexture("grass.png");
@@ -8,10 +7,12 @@ void TileMap::Load()
 	mTextureIds[3] = X::LoadTexture("tree1.png");
 	mTextureIds[4] = X::LoadTexture("tree2.png");
 	mTextureIds[5] = X::LoadTexture("tree3.png");
-
+	
 	mColumns = 25;
 	mRows = 20;
+	
 	mTiles.resize(mColumns*mRows, 0);
+	mGraph.Resize(mColumns, mRows);
 }
 
 void TileMap::Unload()
@@ -34,6 +35,7 @@ void TileMap::Update(float deltaTime)
 			mTiles[i] = 1;
 		}
 	}
+	
 }
 
 void TileMap::Render() const
