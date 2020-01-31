@@ -63,7 +63,6 @@ void TileMap::Update(float deltaTime)
 		mParents = mDFS.GetParents();
 	}
 }
-
 void TileMap::Render() const
 {
 	for (int y = 0; y < mRows; y++)
@@ -83,10 +82,12 @@ void TileMap::Render() const
 	//Draw Closed List
 	for (auto close : mCloseList)
 	{
+		//auto close = *it;
 		X::DrawScreenLine(
 			GetPosition(close),
 			GetPosition(mParents[GetIndex(close.x, close.y)]),
 			X::Colors::Black);
+		//++it;
 	}
 
 	//Draw Path
