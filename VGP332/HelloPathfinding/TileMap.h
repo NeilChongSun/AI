@@ -16,6 +16,7 @@ private:
 	AI::Coord GetClickPosition()const;
 	
 	void ShowDebugUI();
+	void SetObstacle();
 	
 	std::array<X::TextureId,7> mTextureIds;
 	std::vector<int> mTiles;
@@ -37,6 +38,8 @@ private:
 	std::list<AI::Coord> mCloseList;
 	std::vector<AI::Coord> mParents;
 
+	std::vector<bool> mObstacles;
+
 	AI::BFS mBFS;
 	AI::DFS mDFS;
 
@@ -45,5 +48,6 @@ private:
 	bool mIsChoosingStartPoint = false;
 	bool mIsChoosingEndPoint = false;
 	bool mIsChoosingTile = false;
+
 
 };

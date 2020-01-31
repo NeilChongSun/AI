@@ -3,12 +3,12 @@
 void TileMap::Load()
 {
 	mTextureIds[0] = X::LoadTexture("grass.png");
-	mTextureIds[1] = X::LoadTexture("stone.png");
+	mTextureIds[1] = X::LoadTexture("flower.png");
 	mTextureIds[2] = X::LoadTexture("tree0.png");
 	mTextureIds[3] = X::LoadTexture("tree1.png");
 	mTextureIds[4] = X::LoadTexture("tree2.png");
 	mTextureIds[5] = X::LoadTexture("tree3.png");
-	mTextureIds[6] = X::LoadTexture("flower.png");
+	mTextureIds[6] = X::LoadTexture("stone.png");
 
 	mCurrentTile = 0;
 
@@ -16,7 +16,8 @@ void TileMap::Load()
 	mRows = 20;
 
 	mTiles.resize(mColumns*mRows, 0);
-	mGraph.Resize(mColumns, mRows);
+	mObstacles.resize(mColumns*mRows, false);
+	mGraph.Load(mColumns, mRows);
 	mNodes = mGraph.GetNodes();
 }
 
@@ -28,28 +29,30 @@ void TileMap::Unload()
 void TileMap::Update(float deltaTime)
 {
 	ShowDebugUI();
-	//Check bound and make sure we are within the map
-	//Check if mouse is clicked
-	//Index into mTiles and change value
-	AI::Coord clickPos = GetClickPosition();
-	int index = GetIndex(clickPos.x, clickPos.y);
-
+	//Set Obstacle or start\end point when mouse is click
 	if (X::IsMousePressed(X::Mouse::LBUTTON))
 	{
-		if (mIsChoosingStartPoint && !mIsChoosingTile)
+		AI::Coord clickPos = GetClickPosition();
+		int index = GetIndex(clickPos.x, clickPos.y);
+		if (clickPos.x < mColumns&&clickPos.y < mRows)//Check bound and make sure we are within the map
 		{
-			mStartPoint = clickPos;
-		}
-		else if (mIsChoosingEndPoint && !mIsChoosingTile)
-		{
-			mEndPoint = clickPos;
-		}
-		else if (mIsChoosingTile)
-		{
-			mTiles[index] = mCurrentTile;
+			if (mIsChoosingStartPoint && !mIsChoosingTile)
+			{
+				mStartPoint = clickPos;
+			}
+			else if (mIsChoosingEndPoint && !mIsChoosingTile)
+			{
+				mEndPoint = clickPos;
+			}
+			else if (mIsChoosingTile)
+			{
+				mTiles[index] = mCurrentTile;
+			}
+			SetObstacle();
 		}
 	}
 
+	//Draw Path
 	if (mIsBFS&&mDraw)
 	{
 		mPath = mBFS.Search(mGraph, mStartPoint, mEndPoint);
@@ -72,9 +75,9 @@ void TileMap::Render() const
 			const int index = GetIndex(x, y);
 			X::Math::Vector2 pos = GetPosition({ x,y });
 			X::DrawSprite(mTextureIds[mTiles[index]], pos - mOffset, X::Pivot::TopLeft);
-			X::DrawScreenCircle(pos, 5.0f, X::Colors::LightGray);
 			for (int i = 0; i < mNodes[index].neighbors.size(); i++)
 			{
+				X::DrawScreenCircle(pos, 5.0f, X::Colors::LightGray);
 				X::DrawScreenLine(pos, GetPosition(mNodes[index].neighbors[i]), X::Colors::SlateGray);
 			}
 		}
@@ -85,20 +88,14 @@ void TileMap::Render() const
 		if (it != mCloseList.begin())
 		{
 			auto close = *it;
-			X::DrawScreenLine(
-				GetPosition(close),
-				GetPosition(mParents[GetIndex(close.x, close.y)]),
-				X::Colors::Black);
+			X::DrawScreenLine(GetPosition(close), GetPosition(mParents[GetIndex(close.x, close.y)]), X::Colors::Black);
 		}
 	}
 
 	//Draw Path
 	for (int i = 1; i < mPath.size(); i++)
 	{
-		X::DrawScreenLine(
-			GetPosition(mParents[GetIndex(mPath[i].x, mPath[i].y)]),
-			GetPosition(mPath[i]),
-			X::Colors::Red);
+		X::DrawScreenLine(GetPosition(mParents[GetIndex(mPath[i].x, mPath[i].y)]), GetPosition(mPath[i]), X::Colors::Red);
 	}
 	//Draw start point and end point
 	X::DrawScreenDiamond(GetPosition(mStartPoint), 10.0f, X::Colors::Blue);
@@ -123,10 +120,7 @@ AI::Coord TileMap::GetClickPosition() const
 {
 	int column = static_cast<int>(X::GetMouseScreenX() / mTileSize);
 	int row = static_cast<int>(X::GetMouseScreenY() / mTileSize);
-	if (column < mColumns&&row < mRows)
-	{
-		return AI::Coord{ column,row };
-	}
+	return AI::Coord{ column,row };
 }
 
 void TileMap::ShowDebugUI()
@@ -210,6 +204,25 @@ void TileMap::ShowDebugUI()
 			ImGui::SameLine();
 	}
 	ImGui::End();
+}
+
+void TileMap::SetObstacle()
+{
+	//Obstacle
+	for (int y = 0; y < mRows; y++)
+	{
+		for (int x = 0; x < mColumns; x++)
+		{
+			int i = GetIndex(x, y);
+			if (mTiles[i] >= 2)
+				mObstacles[i] = true;
+			else
+				mObstacles[i] = false;
+		}
+	}
+	mGraph.SetObstacles(mObstacles);
+	mGraph.Resize(mColumns, mRows);
+	mNodes = mGraph.GetNodes();
 }
 
 

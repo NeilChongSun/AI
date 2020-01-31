@@ -3,12 +3,18 @@
 
 using namespace AI;
 
+void AI::Graph::Load(int columns, int rows)
+{
+	mObstacles.resize(columns*rows);
+	Resize(columns, rows);
+}
+
 void Graph::Resize(int columns, int rows)
 {
 	mColumns = columns;
 	mRows = rows;
+	mNodes.clear();
 	mNodes.resize(columns*rows);
-
 	for (int y = 0; y < rows; y++)
 	{
 		for (int x = 0; x < columns; x++)
@@ -17,13 +23,16 @@ void Graph::Resize(int columns, int rows)
 			//Good Way
 			int index = GetIndex(Coord{ x,y });
 
-			for (int v = y-1; v <= y+1; v++)
+			for (int v = y - 1; v <= y + 1; v++)
 			{
-				for (int h = x-1; h <= x+1; h++)
+				for (int h = x - 1; h <= x + 1; h++)
 				{
-					if (v>=0 && h>=0 && (v!=y||h!=x) && v<rows && h<columns)
+					if (v >= 0 && h >= 0 && (v != y || h != x) && v < rows && h < columns && !mObstacles[GetIndex (Coord{h,v})])
 					{
-						mNodes[index].neighbors.push_back(Coord{ h,v });
+						if (!mObstacles[index])
+						{
+							mNodes[index].neighbors.push_back(Coord{ h,v });
+						}
 					}
 				}
 			}
@@ -97,7 +106,7 @@ void Graph::Resize(int columns, int rows)
 			//}
 		}
 	}
-} 
+}
 Graph::Node* Graph::GetNode(const Coord& coord)
 {
 	return const_cast<Node*>(static_cast<const Graph*>(this)->GetNode(coord));
@@ -120,6 +129,11 @@ const Graph::Node* Graph::GetNode(const Coord& coord) const
 int Graph::GetIndex(Coord coord)const
 {
 	return coord.x + (coord.y*mColumns);
+}
+
+void AI::Graph::SetObstacles(std::vector<bool> isObstacle)
+{
+	mObstacles = isObstacle;
 }
 
 
