@@ -7,10 +7,10 @@ Path BFS::Search(const Graph & graph, const Coord & start, const Coord end)
 {
 	mOpenList.clear();
 	mClosedList.clear();
-	mParent.clear();
+	mParents.clear();
 	mOpened.clear();
 	mClosed.clear();
-	mParent.resize(graph.GetColumns()*graph.GetRows());
+	mParents.resize(graph.GetColumns()*graph.GetRows());
 	mOpened.resize(graph.GetColumns()*graph.GetRows());
 	mClosed.resize(graph.GetColumns()*graph.GetRows());
 
@@ -40,7 +40,7 @@ Path BFS::Search(const Graph & graph, const Coord & start, const Coord end)
 				{
 					mOpenList.push_back(neighbors);
 					mOpened[graph.GetIndex(neighbors)] = true;
-					mParent[neighborIndex]=current;
+					mParents[neighborIndex]=current;
 				}
 			}
 		}
@@ -56,7 +56,7 @@ Path BFS::Search(const Graph & graph, const Coord & start, const Coord end)
 		while (next.IsValid())
 		{
 			trace.push_front(next);
-			next = mParent[graph.GetIndex(next)];
+			next = mParents[graph.GetIndex(next)];
 		}
 		path.reserve(trace.size());
 		for (auto node: trace)

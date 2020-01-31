@@ -21,7 +21,7 @@ void Graph::Resize(int columns, int rows)
 			{
 				for (int h = x-1; h <= x+1; h++)
 				{
-					if (v>=0&&h>=0&&(v!=x||h!=y)&&v<rows&&h<columns)
+					if (v>=0 && h>=0 && (v!=x||h!=y) && v<rows && h<columns)
 					{
 						mNodes[index].neighbors.push_back(Coord{ h,v });
 					}
@@ -117,8 +117,10 @@ const Graph::Node* Graph::GetNode(const Coord& coord) const
 	}
 }
 
-
 int Graph::GetIndex(Coord coord)const
 {
 	return coord.x + (coord.y*mColumns);
 }
+
+
+
