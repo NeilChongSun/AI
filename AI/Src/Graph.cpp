@@ -17,84 +17,84 @@ void Graph::Resize(int columns, int rows)
 			//Good Way
 			int index = GetIndex(Coord{ x,y });
 
-			/*for (int v = y-1; v <= y+1; v++)
+			for (int v = y-1; v <= y+1; v++)
 			{
 				for (int h = x-1; h <= x+1; h++)
 				{
-					if (v>=0 && h>=0 && (v!=x||h!=y) && v<rows && h<columns)
+					if (v>=0 && h>=0 && (v!=y||h!=x) && v<rows && h<columns)
 					{
 						mNodes[index].neighbors.push_back(Coord{ h,v });
 					}
 				}
-			}*/
+			}
 			//Bad Way
-			if (y == 0 && x == 0)
-			{
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y });
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y + 1 });
-				mNodes[index].neighbors.push_back(Coord{ x,y + 1 });
-			}
-			else if (y == 0 && x == columns - 1)
-			{
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y + 1 }); //Left Buttom
-				mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
-			}
-			else if (y == 0 && x != 0 && x != columns - 1)
-			{
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y + 1 }); //Left Buttom
-				mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
-				mNodes[index].neighbors.push_back(Coord{ x + 1 ,y + 1 });//Right Buttom
-			}
-			else if (y == rows - 1 && x == 0)
-			{
-				mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y - 1 }); //Right Top
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
-			}
-			else if (y == rows - 1 && x == columns - 1)
-			{
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y - 1 }); //Left Top    
-				mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
-			}
-			else if (y == rows - 1 && x != 0 && x != columns - 1)
-			{
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y - 1 }); //Left Top    
-				mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y - 1 }); //Right Top
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
-			}
-			else if (y != 0 && y != rows - 1 && x == 0)
-			{
-				mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y - 1 }); //Right Top
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
-				mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
-				mNodes[index].neighbors.push_back(Coord{ x + 1 ,y + 1 });//Right Buttom
-			}
-			else if (y != 0 && y != rows - 1 && x == columns - 1)
-			{
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y - 1 }); //Left Top    
-				mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y + 1 }); //Left Buttom
-				mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
-			}
-			else
-			{
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y - 1 }); //Left Top    
-				mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y - 1 }); //Right Top
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
-				mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
-				mNodes[index].neighbors.push_back(Coord{ x - 1,y + 1 }); //Left Buttom
-				mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
-				mNodes[index].neighbors.push_back(Coord{ x + 1 ,y + 1 });//Right Buttom
-			}
+			//if (y == 0 && x == 0)
+			//{
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y });
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y + 1 });
+			//	mNodes[index].neighbors.push_back(Coord{ x,y + 1 });
+			//}
+			//else if (y == 0 && x == columns - 1)
+			//{
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y + 1 }); //Left Buttom
+			//	mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
+			//}
+			//else if (y == 0 && x != 0 && x != columns - 1)
+			//{
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y + 1 }); //Left Buttom
+			//	mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1 ,y + 1 });//Right Buttom
+			//}
+			//else if (y == rows - 1 && x == 0)
+			//{
+			//	mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y - 1 }); //Right Top
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
+			//}
+			//else if (y == rows - 1 && x == columns - 1)
+			//{
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y - 1 }); //Left Top    
+			//	mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
+			//}
+			//else if (y == rows - 1 && x != 0 && x != columns - 1)
+			//{
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y - 1 }); //Left Top    
+			//	mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y - 1 }); //Right Top
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
+			//}
+			//else if (y != 0 && y != rows - 1 && x == 0)
+			//{
+			//	mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y - 1 }); //Right Top
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
+			//	mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1 ,y + 1 });//Right Buttom
+			//}
+			//else if (y != 0 && y != rows - 1 && x == columns - 1)
+			//{
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y - 1 }); //Left Top    
+			//	mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y + 1 }); //Left Buttom
+			//	mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
+			//}
+			//else
+			//{
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y - 1 }); //Left Top    
+			//	mNodes[index].neighbors.push_back(Coord{ x,y - 1 });	 //Top
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y - 1 }); //Right Top
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y });	 //Left
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1,y });	 //Right
+			//	mNodes[index].neighbors.push_back(Coord{ x - 1,y + 1 }); //Left Buttom
+			//	mNodes[index].neighbors.push_back(Coord{ x ,y + 1 });	 //Buttom
+			//	mNodes[index].neighbors.push_back(Coord{ x + 1 ,y + 1 });//Right Buttom
+			//}
 		}
 	}
 } 

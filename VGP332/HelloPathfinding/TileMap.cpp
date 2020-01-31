@@ -80,14 +80,16 @@ void TileMap::Render() const
 		}
 	}
 	//Draw Closed List
-	for (auto close : mCloseList)
+	for (auto it = mCloseList.begin(); it != mCloseList.end(); ++it)
 	{
-		//auto close = *it;
-		X::DrawScreenLine(
-			GetPosition(close),
-			GetPosition(mParents[GetIndex(close.x, close.y)]),
-			X::Colors::Black);
-		//++it;
+		if (it != mCloseList.begin())
+		{
+			auto close = *it;
+			X::DrawScreenLine(
+				GetPosition(close),
+				GetPosition(mParents[GetIndex(close.x, close.y)]),
+				X::Colors::Black);
+		}
 	}
 
 	//Draw Path
@@ -189,7 +191,7 @@ void TileMap::ShowDebugUI()
 	ImGui::SameLine();
 	if (mIsChoosingTile)
 		ImGui::Image(X::GetSprite(mTextureIds[mCurrentTile]), { 32.0,32.0 });
-	else if (mIsChoosingStartPoint&&!mIsChoosingTile)
+	else if (mIsChoosingStartPoint && !mIsChoosingTile)
 		ImGui::Text("Start Point");
 	else if (mIsChoosingEndPoint && !mIsChoosingTile)
 		ImGui::Text("End Point");

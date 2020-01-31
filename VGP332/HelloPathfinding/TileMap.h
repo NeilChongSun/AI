@@ -29,7 +29,7 @@ private:
 	
 	AI::Graph mGraph;
 	AI::Coord mStartPoint = {0,0};
-	AI::Coord mEndPoint = {0,0};
+	AI::Coord mEndPoint = {0,1};
 	
 	X::Math::Vector2 mOffset = { static_cast<float>(mTileSize / 2),static_cast<float>(mTileSize / 2) };
 	
