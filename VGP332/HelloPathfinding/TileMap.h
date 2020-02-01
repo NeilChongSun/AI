@@ -43,11 +43,9 @@ private:
 	AI::BFS mBFS;
 	AI::DFS mDFS;
 
-	bool mIsBFS = false;
+	bool mIsBFS = true;
 	bool mDraw = false;
 	bool mIsChoosingStartPoint = false;
 	bool mIsChoosingEndPoint = false;
 	bool mIsChoosingTile = false;
-
-
 };
