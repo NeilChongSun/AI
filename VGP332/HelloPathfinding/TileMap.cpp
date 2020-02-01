@@ -136,18 +136,18 @@ void TileMap::ShowDebugUI()
 		ImGui::Text("Current Search Mode: DFS");
 	//Buttons
 		//Choose BFS or DFS
-	if (ImGui::Button("BFS", { 50,20 }))
+	if (ImGui::Button("BFS", { 60,30 }))
 		mIsBFS = true;
 	ImGui::SameLine();
 	ImGui::Spacing();
 	ImGui::SameLine();
-	if (ImGui::Button("DFS", { 50,20 }))
+	if (ImGui::Button("DFS", { 60,30 }))
 		mIsBFS = false;
 	//Set start point and end point
 	ImGui::Separator();
 	ImGui::Text("Start Point: %d,%d", mStartPoint.x + 1, mStartPoint.y + 1);
 	ImGui::Text("End Point: %d,%d", mEndPoint.x + 1, mEndPoint.y + 1);
-	if (ImGui::Button("Set Start Point", { 120,20 }))
+	if (ImGui::Button("Set Start Point", { 120,30 }))
 	{
 		mIsChoosingEndPoint = false;
 		mIsChoosingStartPoint = true;
@@ -156,7 +156,7 @@ void TileMap::ShowDebugUI()
 	ImGui::SameLine();
 	ImGui::Spacing();
 	ImGui::SameLine();
-	if (ImGui::Button("Set End Point", { 120,20 }))
+	if (ImGui::Button("Set End Point", { 120,30 }))
 	{
 		mIsChoosingStartPoint = false;
 		mIsChoosingEndPoint = true;
@@ -165,18 +165,21 @@ void TileMap::ShowDebugUI()
 
 	//Draw Path
 	ImGui::Separator();
-	if (ImGui::Button("Draw", { 50,20 }))
+	if (ImGui::Button("Draw", { 60,30 }))
 		mDraw = true;
 	ImGui::SameLine();
 	ImGui::Spacing();
 	ImGui::SameLine();
 	//Clear Path
-	if (ImGui::Button("Clear", { 50,20 }))
+	if (ImGui::Button("Clear", { 60,30 }))
 	{
 		mDraw = false;
 		mPath.clear();
 		mCloseList.clear();
 		mParents.clear();
+		mTiles.clear();
+		mTiles.resize(mColumns*mRows, 0);
+		SetObstacle();
 	}
 
 	//Show the image that I choose currently
