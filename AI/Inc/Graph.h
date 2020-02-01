@@ -25,7 +25,6 @@ namespace AI
 		{
 			std::vector<Coord> neighbors;
 		};
-		void Load(int columns, int rows);
 		void Resize(int columns, int rows);
 		Node* GetNode(const Coord& coord);
 		const Node* GetNode(const Coord& coord) const;
@@ -33,10 +32,8 @@ namespace AI
 		int GetRows()const { return mRows; }
 		std::vector<Node> GetNodes()const { return mNodes; }
 		int GetIndex(Coord coord)const;
-		void SetObstacles(std::vector<bool> isObstacle);
 	private:
 		std::vector<Node> mNodes;
-		std::vector<bool> mObstacles;
 		int mColumns;
 		int mRows;
 	};

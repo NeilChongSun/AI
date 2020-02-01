@@ -3,7 +3,7 @@
 
 using namespace AI;
 
-Path BFS::Search(const Graph & graph, const Coord & start, const Coord end)
+Path BFS::Search(const Graph & graph, const Coord & start, const Coord end, std::function<bool(Coord)> isBlock)
 {
 	mOpenList.clear();
 	mClosedList.clear();
@@ -36,7 +36,7 @@ Path BFS::Search(const Graph & graph, const Coord & start, const Coord end)
 			for (auto neighbors:currentNode->neighbors)
 			{
 				int neighborIndex = graph.GetIndex(neighbors);
-				if (!mOpened[neighborIndex])
+				if (!mOpened[neighborIndex]&&!isBlock(neighbors))
 				{
 					mOpenList.push_back(neighbors);
 					mOpened[graph.GetIndex(neighbors)] = true;

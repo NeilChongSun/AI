@@ -16,8 +16,7 @@ void TileMap::Load()
 	mRows = 20;
 
 	mTiles.resize(mColumns*mRows, 0);
-	mObstacles.resize(mColumns*mRows, false);
-	mGraph.Load(mColumns, mRows);
+	mGraph.Resize(mColumns, mRows);
 	mNodes = mGraph.GetNodes();
 }
 
@@ -47,21 +46,30 @@ void TileMap::Update(float deltaTime)
 			else if (mIsChoosingTile)
 			{
 				mTiles[index] = mCurrentTile;
+
 			}
-			SetObstacle();
 		}
 	}
+
 
 	//Draw Path
 	if (mIsBFS&&mDraw)
 	{
-		mPath = mBFS.Search(mGraph, mStartPoint, mEndPoint);
+		auto isBlockedFunc = [this](AI::Coord coord)
+		{
+			return mTiles[GetIndex(coord.x, coord.y)] != 0;
+		};
+		mPath = mBFS.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc);
 		mCloseList = mBFS.GetClosedList();
 		mParents = mBFS.GetParents();
 	}
 	if (!mIsBFS&&mDraw)
 	{
-		mPath = mDFS.Search(mGraph, mStartPoint, mEndPoint);
+		auto isBlockedFunc = [this](AI::Coord coord)
+		{
+			return mTiles[GetIndex(coord.x, coord.y)] != 0;
+		};
+		mPath = mDFS.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc);
 		mCloseList = mDFS.GetClosedList();
 		mParents = mDFS.GetParents();
 	}
@@ -179,7 +187,6 @@ void TileMap::ShowDebugUI()
 		mParents.clear();
 		mTiles.clear();
 		mTiles.resize(mColumns*mRows, 0);
-		SetObstacle();
 	}
 
 	//Show the image that I choose currently
@@ -209,23 +216,6 @@ void TileMap::ShowDebugUI()
 	ImGui::End();
 }
 
-void TileMap::SetObstacle()
-{
-	//Obstacle
-	for (int y = 0; y < mRows; y++)
-	{
-		for (int x = 0; x < mColumns; x++)
-		{
-			int i = GetIndex(x, y);
-			if (mTiles[i] >= 2)
-				mObstacles[i] = true;
-			else
-				mObstacles[i] = false;
-		}
-	}
-	mGraph.SetObstacles(mObstacles);
-	mGraph.Resize(mColumns, mRows);
-	mNodes = mGraph.GetNodes();
-}
+
 
 

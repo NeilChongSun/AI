@@ -3,12 +3,6 @@
 
 using namespace AI;
 
-void AI::Graph::Load(int columns, int rows)
-{
-	mObstacles.resize(columns*rows);
-	Resize(columns, rows);
-}
-
 void Graph::Resize(int columns, int rows)
 {
 	mColumns = columns;
@@ -27,12 +21,9 @@ void Graph::Resize(int columns, int rows)
 			{
 				for (int h = x - 1; h <= x + 1; h++)
 				{
-					if (v >= 0 && h >= 0 && (v != y || h != x) && v < rows && h < columns && !mObstacles[GetIndex (Coord{h,v})])
+					if (v >= 0 && h >= 0 && (v != y || h != x) && v < rows && h < columns)
 					{
-						if (!mObstacles[index])
-						{
-							mNodes[index].neighbors.push_back(Coord{ h,v });
-						}
+						mNodes[index].neighbors.push_back(Coord{ h,v });
 					}
 				}
 			}
@@ -131,10 +122,6 @@ int Graph::GetIndex(Coord coord)const
 	return coord.x + (coord.y*mColumns);
 }
 
-void AI::Graph::SetObstacles(std::vector<bool> isObstacle)
-{
-	mObstacles = isObstacle;
-}
 
 
 

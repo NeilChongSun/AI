@@ -1,14 +1,20 @@
 #pragma once
-
 #include"Graph.h"
 
 namespace AI
 {
-	class BFS
+	class AStar
 	{
 	public:
 
-		Path Search(const Graph& graph, const Coord& start, const Coord end, std::function<bool(Coord)> isBlock);
+		Path Search(
+			const Graph& graph, 
+			const Coord& start, 
+			const Coord end,
+			std::function<bool(Coord)> isBlock,
+			std::function<float(Coord, Coord)> getCost,
+			std::function<float(Coord, Coord)> getHeuristic);
+
 		std::list<Coord> GetClosedList() const { return mClosedList; }
 		std::vector<Coord> GetParents() const { return mParents; }
 	private:
@@ -17,5 +23,7 @@ namespace AI
 		std::vector<Coord> mParents;
 		std::vector<bool> mOpened;
 		std::vector<bool> mClosed;
+		std::vector<float> g;
+		std::vector<float> h;
 	};
 }

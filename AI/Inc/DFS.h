@@ -8,7 +8,7 @@ namespace AI
 	{
 	public:
 
-		Path Search(const Graph& graph, const Coord& start, const Coord end);
+		Path Search(const Graph& graph, const Coord& start, const Coord end, std::function<bool(Coord)> isBlock);
 		std::list<Coord> GetClosedList() const { return mClosedList; }
 		std::vector<Coord> GetParents() const { return mParents; }
 	private:
