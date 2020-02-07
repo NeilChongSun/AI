@@ -1,4 +1,4 @@
-#include "TileMap.h"
+#include"TileMap.h"
 #include"ImGui/Inc/imgui.h"
 void TileMap::Load()
 {
@@ -35,43 +35,55 @@ void TileMap::Update(float deltaTime)
 		int index = GetIndex(clickPos.x, clickPos.y);
 		if (clickPos.x < mColumns&&clickPos.y < mRows)//Check bound and make sure we are within the map
 		{
-			if (mIsChoosingStartPoint && !mIsChoosingTile)
-			{
-				mStartPoint = clickPos;
-			}
-			else if (mIsChoosingEndPoint && !mIsChoosingTile)
-			{
-				mEndPoint = clickPos;
-			}
-			else if (mIsChoosingTile)
-			{
-				mTiles[index] = mCurrentTile;
 
+			switch (mMouseClick)
+			{
+			case eSetStart:
+				mCurrentClickText = "Set Start";
+				mStartPoint = clickPos;
+				break;
+			case eSetEnd:
+				mCurrentClickText = "Set Start";
+				mEndPoint = clickPos;
+				break;
+			case eSetTile:mCurrentClickText = "";
+				mTiles[index] = mCurrentTile;
+				break;
+			default:
+				break;
 			}
 		}
 	}
-
-
 	//Draw Path
-	if (mIsBFS&&mDraw)
+	auto isBlockedFunc = [this](AI::Coord coord)
 	{
-		auto isBlockedFunc = [this](AI::Coord coord)
-		{
-			return mTiles[GetIndex(coord.x, coord.y)] != 0;
-		};
-		mPath = mBFS.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc);
-		mCloseList = mBFS.GetClosedList();
-		mParents = mBFS.GetParents();
-	}
-	if (!mIsBFS&&mDraw)
+		return mTiles[GetIndex(coord.x, coord.y)] != 0;
+	};
+	if (mDraw)
 	{
-		auto isBlockedFunc = [this](AI::Coord coord)
+		switch (mSearchMode)
 		{
-			return mTiles[GetIndex(coord.x, coord.y)] != 0;
-		};
-		mPath = mDFS.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc);
-		mCloseList = mDFS.GetClosedList();
-		mParents = mDFS.GetParents();
+		case eBFS:
+			mSearchModeText = "BFS";
+			mPath = mBFS.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc);
+			mCloseList = mBFS.GetClosedList();
+			mParents = mBFS.GetParents();
+			break;
+		case eDFS:
+			mSearchModeText = "DFS";
+			mPath = mDFS.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc);
+			mCloseList = mDFS.GetClosedList();
+			mParents = mDFS.GetParents();
+			break;
+		case eDijkstars:
+			mSearchModeText = "Dijkstars";
+			break;
+		case eAStar:
+			mSearchModeText = "AStar";
+			break;
+		default:
+			break;
+		}
 	}
 }
 void TileMap::Render() const
@@ -138,45 +150,32 @@ void TileMap::ShowDebugUI()
 	ImGui::SetNextWindowSize({ 300.0f, 400.0f });
 	ImGui::Begin("Pathfinding", nullptr, ImGuiWindowFlags_NoResize);
 	//Show current search mode
-	if (mIsBFS)
-		ImGui::Text("Current Search Mode: BFS");
-	else
-		ImGui::Text("Current Search Mode: DFS");
+	ImGui::Text("Current Search Mode: %s", mSearchModeText);
 	//Buttons
 		//Choose BFS or DFS
 	if (ImGui::Button("BFS", { 60,30 }))
-		mIsBFS = true;
-	ImGui::SameLine();
-	ImGui::Spacing();
+		mSearchMode = eBFS;
 	ImGui::SameLine();
 	if (ImGui::Button("DFS", { 60,30 }))
-		mIsBFS = false;
+		mSearchMode = eDFS;
 	//Set start point and end point
 	ImGui::Separator();
 	ImGui::Text("Start Point: %d,%d", mStartPoint.x + 1, mStartPoint.y + 1);
 	ImGui::Text("End Point: %d,%d", mEndPoint.x + 1, mEndPoint.y + 1);
 	if (ImGui::Button("Set Start Point", { 120,30 }))
 	{
-		mIsChoosingEndPoint = false;
-		mIsChoosingStartPoint = true;
-		mIsChoosingTile = false;
+		mMouseClick = eSetStart;
 	}
-	ImGui::SameLine();
-	ImGui::Spacing();
 	ImGui::SameLine();
 	if (ImGui::Button("Set End Point", { 120,30 }))
 	{
-		mIsChoosingStartPoint = false;
-		mIsChoosingEndPoint = true;
-		mIsChoosingTile = false;
+		mMouseClick = eSetEnd;
 	}
 
 	//Draw Path
 	ImGui::Separator();
 	if (ImGui::Button("Draw", { 60,30 }))
 		mDraw = true;
-	ImGui::SameLine();
-	ImGui::Spacing();
 	ImGui::SameLine();
 	//Clear Path
 	if (ImGui::Button("Clear", { 60,30 }))
@@ -191,15 +190,10 @@ void TileMap::ShowDebugUI()
 
 	//Show the image that I choose currently
 	ImGui::Separator();
-	ImGui::Text("Current: ");
+	ImGui::Text("Current: %s", mCurrentClickText);
 	ImGui::SameLine();
-	if (mIsChoosingTile)
+	if (mMouseClick == eSetTile)
 		ImGui::Image(X::GetSprite(mTextureIds[mCurrentTile]), { 32.0,32.0 });
-	else if (mIsChoosingStartPoint && !mIsChoosingTile)
-		ImGui::Text("Start Point");
-	else if (mIsChoosingEndPoint && !mIsChoosingTile)
-		ImGui::Text("End Point");
-
 	ImGui::Separator();
 
 	//Show tiles can be choose
@@ -208,7 +202,7 @@ void TileMap::ShowDebugUI()
 		if (ImGui::ImageButton(X::GetSprite(mTextureIds[i]), { 32.0f,32.0f }))
 		{
 			mCurrentTile = i;
-			mIsChoosingTile = true;
+			mMouseClick = eSetTile;
 		}
 		if (i % 3 != 2)
 			ImGui::SameLine();
@@ -219,3 +213,8 @@ void TileMap::ShowDebugUI()
 
 
 
+
+//
+//
+//
+//
