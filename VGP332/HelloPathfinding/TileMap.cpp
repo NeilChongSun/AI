@@ -4,11 +4,13 @@ void TileMap::Load()
 {
 	mTextureIds[0] = X::LoadTexture("grass.png");
 	mTextureIds[1] = X::LoadTexture("flower.png");
-	mTextureIds[2] = X::LoadTexture("tree0.png");
-	mTextureIds[3] = X::LoadTexture("tree1.png");
-	mTextureIds[4] = X::LoadTexture("tree2.png");
-	mTextureIds[5] = X::LoadTexture("tree3.png");
-	mTextureIds[6] = X::LoadTexture("stone.png");
+	mTextureIds[2] = X::LoadTexture("grass_2.png");
+	mTextureIds[3] = X::LoadTexture("flower_2.png");
+	mTextureIds[4] = X::LoadTexture("tree0.png");
+	mTextureIds[5] = X::LoadTexture("tree1.png");
+	mTextureIds[6] = X::LoadTexture("tree2.png");
+	mTextureIds[7] = X::LoadTexture("tree3.png");
+	mTextureIds[8] = X::LoadTexture("stone.png");
 
 	mCurrentTile = 0;
 
@@ -28,62 +30,72 @@ void TileMap::Unload()
 void TileMap::Update(float deltaTime)
 {
 	ShowDebugUI();
+	mClickPos = GetClickPosition();
+	mClickIndex = GetIndex(mClickPos.x, mClickPos.y);
 	//Set Obstacle or start\end point when mouse is click
-	if (X::IsMousePressed(X::Mouse::LBUTTON))
+	switch (mMouseClick)
 	{
-		AI::Coord clickPos = GetClickPosition();
-		int index = GetIndex(clickPos.x, clickPos.y);
-		if (clickPos.x < mColumns&&clickPos.y < mRows)//Check bound and make sure we are within the map
-		{
-
-			switch (mMouseClick)
-			{
-			case eSetStart:
-				mCurrentClickText = "Set Start";
-				mStartPoint = clickPos;
-				break;
-			case eSetEnd:
-				mCurrentClickText = "Set Start";
-				mEndPoint = clickPos;
-				break;
-			case eSetTile:mCurrentClickText = "";
-				mTiles[index] = mCurrentTile;
-				break;
-			default:
-				break;
-			}
-		}
+	case eSetStart:
+		mCurrentClickText = "Start Point";
+		if (CheckClick())
+			mStartPoint = mClickPos;
+		break;
+	case eSetEnd:
+		mCurrentClickText = "End Point";
+		if (CheckClick())
+			mEndPoint = mClickPos;
+		break;
+	case eSetTile:
+		mCurrentClickText = "";
+		if (CheckClick())
+			mTiles[mClickIndex] = mCurrentTile;
+		break;
+	default:
+		break;
 	}
 	//Draw Path
 	auto isBlockedFunc = [this](AI::Coord coord)
 	{
-		return mTiles[GetIndex(coord.x, coord.y)] != 0;
+		return mTiles[GetIndex(coord.x, coord.y)] >= 4;
 	};
-	if (mDraw)
+	auto getCostFunc = [this](AI::Coord current, AI::Coord neighbor)
 	{
-		switch (mSearchMode)
+		return mTiles[GetIndex(neighbor.x, neighbor.y)];
+	};
+	switch (mSearchMode)
+	{
+	case eBFS:
+		mSearchModeText = "BFS";
+		if (mDraw)
 		{
-		case eBFS:
-			mSearchModeText = "BFS";
 			mPath = mBFS.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc);
 			mCloseList = mBFS.GetClosedList();
 			mParents = mBFS.GetParents();
-			break;
-		case eDFS:
-			mSearchModeText = "DFS";
+		}
+		break;
+	case eDFS:
+		mSearchModeText = "DFS";
+		if (mDraw)
+		{
 			mPath = mDFS.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc);
 			mCloseList = mDFS.GetClosedList();
 			mParents = mDFS.GetParents();
-			break;
-		case eDijkstars:
-			mSearchModeText = "Dijkstars";
-			break;
-		case eAStar:
-			mSearchModeText = "AStar";
-			break;
-		default:
-			break;
 		}
+		break;
+	case eDijkstars:
+		mSearchModeText = "Dijkstars";
+		if (mDraw)
+		{
+			mPath = mDijkstras.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc, getCostFunc);
+			mCloseList = mDijkstras.GetClosedList();
+			mParents = mDijkstras.GetParents();
+		}
+		break;
+	case eAStar:
+		mSearchModeText = "AStar";
+		break;
+	default:
+		break;
 	}
 }
 void TileMap::Render() const
@@ -143,6 +155,14 @@ AI::Coord TileMap::GetClickPosition() const
 	return AI::Coord{ column,row };
 }
 
+bool TileMap::CheckClick() const
+{
+	if (X::IsMousePressed(X::Mouse::LBUTTON))
+		return mClickPos.x < mColumns&&mClickPos.y < mRows;
+	else
+		return false;
+}
+
 void TileMap::ShowDebugUI()
 {
 	//Start ImGui
@@ -158,6 +178,12 @@ void TileMap::ShowDebugUI()
 	ImGui::SameLine();
 	if (ImGui::Button("DFS", { 60,30 }))
 		mSearchMode = eDFS;
+	ImGui::SameLine();
+	if (ImGui::Button("Dijkstars", { 60,30 }))
+		mSearchMode = eDijkstars;
+	ImGui::SameLine();
+	if (ImGui::Button("AStar", { 60,30 }))
+		mSearchMode = eAStar;
 	//Set start point and end point
 	ImGui::Separator();
 	ImGui::Text("Start Point: %d,%d", mStartPoint.x + 1, mStartPoint.y + 1);
@@ -193,7 +219,13 @@ void TileMap::ShowDebugUI()
 	ImGui::Text("Current: %s", mCurrentClickText);
 	ImGui::SameLine();
 	if (mMouseClick == eSetTile)
+	{
 		ImGui::Image(X::GetSprite(mTextureIds[mCurrentTile]), { 32.0,32.0 });
+		ImGui::SameLine();
+		if (mCurrentTile<=3)
+			ImGui::Text("Cost: %d", mCurrentTile);
+	}
+		
 	ImGui::Separator();
 
 	//Show tiles can be choose
@@ -209,12 +241,3 @@ void TileMap::ShowDebugUI()
 	}
 	ImGui::End();
 }
-
-
-
-
-
-//
-//
-//
-//

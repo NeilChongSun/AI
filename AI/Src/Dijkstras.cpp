@@ -35,38 +35,66 @@ Path Dijkstras::Search(const Graph & graph,
 		//If node is end, we are done
 		if (current == end)
 			found = true;
-
 		//Else, expand node
 		else
 		{
 			auto currentNode = graph.GetNode(current);
-			for (auto neighbors : currentNode->neighbors)
+			for (auto neighbor : currentNode->neighbors)
 			{
-				const int neighborIndex = graph.GetIndex(neighbors);
-				if (isBlocked(neighbors) || mClosed[neighborIndex])
+				const int neighborIndex = graph.GetIndex(neighbor);
+				if (isBlocked(neighbor) || mClosed[neighborIndex])
 					continue;
-				const float cost = g[graph.GetIndex(current)] + getCost(current, neighbors);
+				const float cost = g[graph.GetIndex(current)] + getCost(current, neighbor);
 				if (!mOpened[neighborIndex])
 				{
 					mOpened[neighborIndex] = true;
 					mParents[neighborIndex] = current;
 					g[neighborIndex] = cost;
-					//Wrong! Cannot just add to back;
-					//mOpenList.push_back(neighbors);
-					for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
+					if (mOpenList.empty())
 					{
-						auto list = *it;
-						if (g[neighborIndex]<=getCost(current,neighbors))//cost<g(i)
+						mOpenList.push_back(neighbor);
+					}
+					else
+					{
+						for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
 						{
-
+							//auto list = *it;
+							//if (g[neighborIndex]<=getCost(current,neighbors))//cost<g(i)
+							if (cost <= g[graph.GetIndex(*it)])
+							{
+								mOpenList.insert(it, neighbor);
+								break;
+							}
+							else if (cost > g[graph.GetIndex(mOpenList.back())])
+							{
+								mOpenList.push_back(neighbor);
+								break;
+							}
 						}
 					}
 				}
+				//else if (getCost(current, neighbors) < g[neighborIndex])
 				else if (cost < g[neighborIndex])
 				{
 					//update parents
+					mParents[neighborIndex] = current;
 					//update g
-					//remobe and reinsert using new parent
+					g[neighborIndex] = cost;
+					//remove and reinsert using new parent
+					mOpenList.remove(neighbor);
+					for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
+					{
+						if (cost <= g[graph.GetIndex(*it)])
+						{
+							mOpenList.insert(it, neighbor);
+							break;
+						}
+						else if (cost > g[graph.GetIndex(mOpenList.back())])
+						{
+							mOpenList.push_back(neighbor);
+							break;
+						}
+					}
 				}
 			}
 		}
