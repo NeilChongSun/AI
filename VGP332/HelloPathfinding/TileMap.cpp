@@ -62,6 +62,10 @@ void TileMap::Update(float deltaTime)
 	{
 		return mTiles[GetIndex(neighbor.x, neighbor.y)];
 	};
+	auto getHeuristic = [this](AI::Coord start, AI::Coord end)
+	{
+		return std::max(abs(start.x-end.x),abs(start.y-end.y));
+	};
 	switch (mSearchMode)
 	{
 	case eBFS:
@@ -93,6 +97,12 @@ void TileMap::Update(float deltaTime)
 		break;
 	case eAStar:
 		mSearchModeText = "AStar";
+		if (mDraw)
+		{
+			mPath = mAStar.Search(mGraph, mStartPoint, mEndPoint, isBlockedFunc, getCostFunc,getHeuristic);
+			mCloseList = mAStar.GetClosedList();
+			mParents = mAStar.GetParents();
+		}
 		break;
 	default:
 		break;

@@ -13,7 +13,7 @@ Path Dijkstras::Search(const Graph & graph,
 	mParents.clear();
 	mOpened.clear();
 	mClosed.clear();
-	//g.clear();
+	g.clear();
 
 	const int nodeCount = graph.GetColumns()*graph.GetRows();
 	mParents.resize(nodeCount);
@@ -51,15 +51,12 @@ Path Dijkstras::Search(const Graph & graph,
 					mParents[neighborIndex] = current;
 					g[neighborIndex] = cost;
 					if (mOpenList.empty())
-					{
 						mOpenList.push_back(neighbor);
-					}
+
 					else
 					{
 						for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
 						{
-							//auto list = *it;
-							//if (g[neighborIndex]<=getCost(current,neighbors))//cost<g(i)
 							if (cost <= g[graph.GetIndex(*it)])
 							{
 								mOpenList.insert(it, neighbor);
@@ -73,7 +70,6 @@ Path Dijkstras::Search(const Graph & graph,
 						}
 					}
 				}
-				//else if (getCost(current, neighbors) < g[neighborIndex])
 				else if (cost < g[neighborIndex])
 				{
 					//update parents
