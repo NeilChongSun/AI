@@ -50,9 +50,11 @@ Path Dijkstras::Search(const Graph & graph,
 					mOpened[neighborIndex] = true;
 					mParents[neighborIndex] = current;
 					g[neighborIndex] = cost;
+
 					if (mOpenList.empty())
 						mOpenList.push_back(neighbor);
-
+					else if (cost > g[graph.GetIndex(mOpenList.back())])
+						mOpenList.push_back(neighbor);
 					else
 					{
 						for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
@@ -60,11 +62,6 @@ Path Dijkstras::Search(const Graph & graph,
 							if (cost <= g[graph.GetIndex(*it)])
 							{
 								mOpenList.insert(it, neighbor);
-								break;
-							}
-							else if (cost > g[graph.GetIndex(mOpenList.back())])
-							{
-								mOpenList.push_back(neighbor);
 								break;
 							}
 						}
@@ -78,17 +75,17 @@ Path Dijkstras::Search(const Graph & graph,
 					g[neighborIndex] = cost;
 					//remove and reinsert using new parent
 					mOpenList.remove(neighbor);
-					for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
+					if (cost > g[graph.GetIndex(mOpenList.back())])
+						mOpenList.push_back(neighbor);
+					else
 					{
-						if (cost <= g[graph.GetIndex(*it)])
+						for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
 						{
-							mOpenList.insert(it, neighbor);
-							break;
-						}
-						else if (cost > g[graph.GetIndex(mOpenList.back())])
-						{
-							mOpenList.push_back(neighbor);
-							break;
+							if (cost <= g[graph.GetIndex(*it)])
+							{
+								mOpenList.insert(it, neighbor);
+								break;
+							}
 						}
 					}
 				}

@@ -49,7 +49,7 @@ Path AStar::Search(const Graph & graph,
 				if (isBlocked(neighbor) || mClosed[neighborIndex])
 					continue;
 				const float cost = g[graph.GetIndex(current)] + getCost(current, neighbor);
-				const float heuristic = getHeuristic(neighbor,end);
+				const float heuristic = getHeuristic(neighbor, end);
 				if (!mOpened[neighborIndex])
 				{
 					mOpened[neighborIndex] = true;
@@ -60,18 +60,15 @@ Path AStar::Search(const Graph & graph,
 					//insert
 					if (mOpenList.empty())
 						mOpenList.push_back(neighbor);
+					else if (cost + heuristic > g[graph.GetIndex(mOpenList.back())] + h[graph.GetIndex(mOpenList.back())])
+						mOpenList.push_back(neighbor);
 					else
 					{
 						for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
 						{
-							if (cost+heuristic <= g[graph.GetIndex(*it)]+h[graph.GetIndex(*it)])
+							if (cost + heuristic <= g[graph.GetIndex(*it)] + h[graph.GetIndex(*it)])
 							{
 								mOpenList.insert(it, neighbor);
-								break;
-							}
-							else if (cost+heuristic > g[graph.GetIndex(mOpenList.back())]+h[graph.GetIndex(mOpenList.back())])
-							{
-								mOpenList.push_back(neighbor);
 								break;
 							}
 						}
@@ -87,17 +84,17 @@ Path AStar::Search(const Graph & graph,
 					//keep h(i.e. no code)
 					//remobe and re-insert using new f=g+h to sort
 					mOpenList.remove(neighbor);
-					for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
+					if (cost > g[graph.GetIndex(mOpenList.back())])
+						mOpenList.push_back(neighbor);
+					else
 					{
-						if (cost <= g[graph.GetIndex(*it)])
+						for (auto it = mOpenList.begin(); it != mOpenList.end(); ++it)
 						{
-							mOpenList.insert(it, neighbor);
-							break;
-						}
-						else if (cost > g[graph.GetIndex(mOpenList.back())])
-						{
-							mOpenList.push_back(neighbor);
-							break;
+							if (cost <= g[graph.GetIndex(*it)])
+							{
+								mOpenList.insert(it, neighbor);
+								break;
+							}
 						}
 					}
 				}

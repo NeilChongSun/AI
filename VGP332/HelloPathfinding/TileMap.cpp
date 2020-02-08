@@ -8,9 +8,9 @@ void TileMap::Load()
 	mTextureIds[3] = X::LoadTexture("flower_2.png");
 	mTextureIds[4] = X::LoadTexture("tree0.png");
 	mTextureIds[5] = X::LoadTexture("tree1.png");
-	mTextureIds[6] = X::LoadTexture("tree2.png");
-	mTextureIds[7] = X::LoadTexture("tree3.png");
-	mTextureIds[8] = X::LoadTexture("stone.png");
+	mTextureIds[6] = X::LoadTexture("stone.png");
+	mTextureIds[7] = X::LoadTexture("tree2.png");
+	mTextureIds[8] = X::LoadTexture("tree3.png");
 
 	mCurrentTile = 0;
 
@@ -60,11 +60,12 @@ void TileMap::Update(float deltaTime)
 	};
 	auto getCostFunc = [this](AI::Coord current, AI::Coord neighbor)
 	{
-		return mTiles[GetIndex(neighbor.x, neighbor.y)];
+		bool diagonal = current.x != neighbor.x && current.y != neighbor.y;
+		return (mTiles[GetIndex(neighbor.x, neighbor.y)] + 1) * (diagonal ? 1.414f : 1.0f);
 	};
 	auto getHeuristic = [this](AI::Coord start, AI::Coord end)
 	{
-		return std::max(abs(start.x-end.x),abs(start.y-end.y));
+		return abs(start.x-end.x)+abs(start.y-end.y);
 	};
 	switch (mSearchMode)
 	{
@@ -233,7 +234,7 @@ void TileMap::ShowDebugUI()
 		ImGui::Image(X::GetSprite(mTextureIds[mCurrentTile]), { 32.0,32.0 });
 		ImGui::SameLine();
 		if (mCurrentTile<=3)
-			ImGui::Text("Cost: %d", mCurrentTile);
+			ImGui::Text("Cost: %d", mCurrentTile+1);
 	}
 		
 	ImGui::Separator();
