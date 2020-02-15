@@ -12,3 +12,8 @@
 //FSM headers
 #include"StateMachine.h"
 #include"State.h"
+
+//World headers
+#include"Entity.h"
+#include"AIWorld.h"
+#include"Agent.h"

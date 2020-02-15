@@ -10,9 +10,9 @@ namespace AI
 	public:
 		using StateType = State<AgentType>;
 
-		StateMachine(AgentType& agnet) : mAgent(agent) {}
+		StateMachine(AgentType& agent) : mAgent(agent) {}
 
-		StateMachine(AgentType& agent);
+		//StateMachine(AgentType& agent);
 
 		template<class NewStateType>
 		void AddState(std::string name)
@@ -28,7 +28,7 @@ namespace AI
 			mCurrentState->Update(mAgent, deltaTime);
 		}
 
-		void ChangeState(std::String stateName) 
+		void ChangeState(std::string stateName) 
 		{
 			auto iter = mStates.find(stateName);
 			if (iter == mStates.end())

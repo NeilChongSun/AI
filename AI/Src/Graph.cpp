@@ -109,12 +109,11 @@ const Graph::Node* Graph::GetNode(const Coord& coord) const
 	int index = GetIndex(coord);
 	if (coord.x >= 0 && coord.x < mColumns&&coord.y >= 0 && coord.y < mRows)
 	{
-		if (coord.x >= 0 && coord.x < mColumns&&coord.y >= 0 && coord.y < mRows)
-		{
-			return &mNodes[index];
-		}
-		return nullptr;
+
+		return &mNodes[index];
+
 	}
+	return nullptr;
 }
 
 int Graph::GetIndex(Coord coord)const

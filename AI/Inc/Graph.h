@@ -8,7 +8,7 @@ namespace AI
 		int y = -1;
 		bool IsValid() const
 		{
-			return x != -1 & y != -1;
+			return x != -1 && y != -1;
 		}
 		bool operator==(const Coord& rhs)const
 		{
