@@ -18,7 +18,9 @@ protected:
 	X::TextureId mCatTexture = 0;
 	X::Math::Vector2 mPosition;
 	X::SoundId mMeowId;
-	float mSpeed;
+	float mSpeed=100.0f;
 	Cat mCat;
+	X::Math::Vector2 mTarget;
+	X::Math::Vector2 mHeading;
 
 };

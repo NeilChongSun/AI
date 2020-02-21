@@ -75,7 +75,7 @@ Path AStar::Search(const Graph & graph,
 					}
 
 				}
-				else if (cost < g[neighborIndex])
+				else if (cost+heuristic < g[neighborIndex]+h[neighborIndex])
 				{
 					//update parents
 					mParents[neighborIndex] = current;
