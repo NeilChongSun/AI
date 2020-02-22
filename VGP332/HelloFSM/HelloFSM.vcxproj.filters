@@ -12,19 +12,10 @@
     <ClCompile Include="Meow.cpp">
       <Filter>State</Filter>
     </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>State</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cat.h" />
     <ClInclude Include="Idle.h">
-      <Filter>State</Filter>
-    </ClInclude>
-    <ClInclude Include="CatState.h">
-      <Filter>State</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="Run.h">

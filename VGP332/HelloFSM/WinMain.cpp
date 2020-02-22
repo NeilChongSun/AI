@@ -13,6 +13,7 @@ void GameCleanup()
 bool GameLoop(float deltaTime)
 {
 	cat.Update(deltaTime);
+	cat.Render();
 	return X::IsKeyPressed(X::Keys::ESCAPE);
 }
 

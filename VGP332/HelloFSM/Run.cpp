@@ -1,24 +1,25 @@
 #include "Run.h"
 
-void Run::Load()
+void Run::Enter(Cat & agent)
 {
+	mPosition = agent.GetPosition();
+	mTarget = agent.GetTarget();
+	mSpeed = 300.0f;
 }
 
-void Run::Unload()
+void Run::Update(Cat & agent, float deltaTime)
 {
-}
-
-void Run::Update(float deltaTime)
-{
+	mHeading = X::Math::Normalize(mTarget - mPosition);
 	mPosition += mHeading * mSpeed*deltaTime;
-	if (mPosition.x == mTarget.x&&mPosition.y == mTarget.y)
+	agent.SetPosition(mPosition);
+	if (X::Math::Distance(mPosition,mTarget)<=1.0f)
 	{
 		mSpeed = 0.0f;
-		mCat.ChangeState("Meow.wav");
+		agent.ChangeState("Meow");
 	}
 }
 
-void Run::Render()
+void Run::Exit(Cat & agent)
 {
-	X::DrawSprite(mCatTexture, mPosition);
+	
 }

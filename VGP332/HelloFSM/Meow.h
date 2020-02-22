@@ -1,12 +1,14 @@
 #pragma once
-#include"CatState.h"
+#include"Cat.h"
+#include <AI.h>
 
-class Meow :public CatState
+class Meow :public AI::State<Cat>
 {
 public:
 	~Meow() = default;
-	void Load() override;
-	void Unload() override;
-	void Update(float deltaTime) override;
-	void Render() override;
+	void Enter(Cat& agent) override;
+	void Update(Cat& agent, float deltaTime) override;
+	void Exit(Cat& agent)override;
+private:
+	X::SoundId mMeowId;
 };

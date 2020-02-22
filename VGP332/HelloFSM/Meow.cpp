@@ -1,21 +1,16 @@
 #include "Meow.h"
 
-void Meow::Load()
+void Meow::Enter(Cat& anget)
 {
-	mMeowId = X::LoadSound("Meow.wmn");
+	mMeowId = X::LoadSound("photongun1.wav");
 }
 
-void Meow::Unload()
-{
-}
-
-void Meow::Update(float deltaTime)
+void Meow::Update(Cat& agent, float deltaTime)
 {
 	X::PlaySoundOneShot(mMeowId);
-	mCat.ChangeState("Idle");
+	agent.ChangeState("Idle");
 }
 
-void Meow::Render()
+void Meow::Exit(Cat & agent)
 {
-	X::DrawSprite(mCatTexture, mPosition);
 }

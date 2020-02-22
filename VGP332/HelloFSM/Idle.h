@@ -1,12 +1,11 @@
 #pragma once
-#include"CatState.h"
-
-class Idle :public CatState
+#include"Cat.h"
+#include"AI.h"
+class Idle :public AI::State<Cat>
 {
 public:
 	~Idle() = default;
-	void Load() override;
-	void Unload() override;
-	void Update(float deltaTime) override;
-	void Render() override;
+	void Enter(Cat& agent) override;
+	void Update(Cat& agent, float deltaTime) override;
+	void Exit(Cat& agent)override;
 };
