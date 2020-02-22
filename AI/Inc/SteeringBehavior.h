@@ -16,7 +16,7 @@ namespace AI
 
 		void SetActive(bool active) { mActive = active; }
 		bool IsActive() const { return mActive; }
-
+		
 	private:
 		bool mActive = false;
 	};
