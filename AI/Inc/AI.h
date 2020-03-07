@@ -19,3 +19,7 @@
 #include"Agent.h"
 #include"SteeringBehavior.h"
 #include"SteeringModule.h"
+
+#include"PerceptionModule.h"
+#include"MemoryRecord.h"
+#include"Sensor.h"

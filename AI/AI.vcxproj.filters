@@ -78,6 +78,15 @@
     <ClInclude Include="Inc\SteeringBehavior.h">
       <Filter>Inc\Steering</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\PerceptionModule.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Sensor.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\MemoryRecord.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Precompiled.cpp">
@@ -109,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="Src\SteeringModule.cpp">
       <Filter>Src\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PerceptionModule.cpp">
+      <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
