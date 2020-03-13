@@ -12,6 +12,11 @@ namespace AI
 		Entity(AIWorld& world, uint16_t typeId);
 		virtual ~Entity();
 
+		Entity(const Entity&) = delete;
+		Entity& operator=(const Entity&) = delete;
+		Entity(Entity &&) = delete;
+		Entity& operator=(Entity&&) = delete;
+
 		X::Math::Matrix3 LocalToWorld() const;
 		const uint32_t GetTypeId() const { return mUniqueId >> 32; }
 		const uint64_t GetUniqueId() const { return mUniqueId; }

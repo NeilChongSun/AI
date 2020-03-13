@@ -11,6 +11,8 @@ namespace AI
 		Agent(AIWorld& world, uint32_t typeId);
 		~Agent() override = default;
 
+		Agent* threat = nullptr;
+
 		AgentList neighbors;
 		X::Math::Vector2 velocity = X::Math::Vector2::Zero();
 		X::Math::Vector2 destination = X::Math::Vector2::Zero();
