@@ -19,7 +19,19 @@
 #include"Agent.h"
 #include"SteeringBehavior.h"
 #include"SteeringModule.h"
-
+//Behavior
+#include "AvoidObsBehavior.h"
+#include "AlignmentBehavior.h"
+#include "ArriveBehavior.h"
+#include "CohesionBehavior.h"
+#include "EvadeBehavior.h"
+#include "SeekBehavior.h"
+#include "FleeBehavior.h"
+#include "HideBehavior.h"
+#include "PursuitBehavior.h"
+#include "SeparationBehavior.h"
+#include "WanderBehavior.h"
+//Memory
 #include"PerceptionModule.h"
 #include"MemoryRecord.h"
 #include"Sensor.h"
