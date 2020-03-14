@@ -35,3 +35,8 @@
 #include"PerceptionModule.h"
 #include"MemoryRecord.h"
 #include"Sensor.h"
+//Decision headers
+#include"Goal.h"
+#include"GoalComposite.h"
+#include"Strategy.h"
+#include"DecisionModule.h"
