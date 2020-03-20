@@ -9,5 +9,5 @@ X::Math::Vector2 FleeBehavior::Calculate(Agent & agent)
 	if (X::Math::DistanceSqr(agent.position, agent.destination) > PanicDistanceSq)
 		return X::Math::Vector2{ 0,0 };
 
-	return ((X::Math::Normalize(agent.position - agent.destination) *agent.maxSpeed) - agent.velocity) / agent.mass;
+	return ((X::Math::Normalize(agent.position - agent.destination) *agent.maxSpeed) - agent.velocity) /0.5;
 }

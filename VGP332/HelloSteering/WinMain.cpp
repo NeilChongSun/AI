@@ -1,4 +1,6 @@
 #include<XEngine.h>
+#include"Interceptor.h"
+Interceptor a;
 void GameInit()
 {
 }

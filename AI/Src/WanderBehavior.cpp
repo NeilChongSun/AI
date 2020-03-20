@@ -5,8 +5,7 @@ using namespace AI;
 
 X::Math::Vector2 WanderBehavior::Calculate(Agent & agent)
 {
-	float wanderDistance = 100.0f;
-	const float wanderJitter = 5.0f;
+	
 	X::Math::Vector2 circle = (agent.position + (agent.heading * wanderDistance));
 
 	X::Math::Vector2 random; // WanderJitter
@@ -15,15 +14,15 @@ X::Math::Vector2 WanderBehavior::Calculate(Agent & agent)
 
 	targetPos += random;
 	targetPos = X::Math::Normalize(targetPos);
-	targetPos *= agent.radius;
+	targetPos *= wanderRadius;
 
 	agent.destination = targetPos + circle;
 
 	X::Math::Vector2 desiredVel = X::Math::Normalize(agent.destination - agent.position) * agent.maxSpeed;
 	desiredVel -= agent.velocity;
 
-	X::DrawScreenCircle(circle.x,circle.y, agent.radius, X::Colors::Green);
-	X::DrawScreenCircle(agent.destination, agent.radius* 0.25f, X::Colors::Gold);
+	X::DrawScreenCircle(circle.x,circle.y, wanderRadius, X::Colors::Green);
+	X::DrawScreenCircle(agent.destination, 2.0f, X::Colors::Gold);
 
 	return desiredVel;
 }

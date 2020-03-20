@@ -23,7 +23,7 @@ namespace AI
 		AIWorld& world;
 		X::Math::Vector2 position = X::Math::Vector2::Zero();
 		X::Math::Vector2 heading = X::Math::Vector2::YAxis();
-		float radius = 1.0f;
+		float radius = 10.0f;
 	private:
 		const uint64_t mUniqueId = 0;
 	};

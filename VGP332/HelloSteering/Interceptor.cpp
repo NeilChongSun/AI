@@ -1,4 +1,5 @@
 #include"Interceptor.h"
+
 void Interceptor::Load()
 {
 	
