@@ -28,7 +28,7 @@ void Enemy::Load()
 {
 	const auto width = static_cast<float>(X::GetScreenWidth());
 	const auto height = static_cast<float>(X::GetScreenHeight());
-	maxSpeed = 150.0f;
+	maxSpeed = 100.0f;
 	position = { X::RandomFloat(0.0f,width),X::RandomFloat(0.0f,height) };
 	mSteering = std::make_unique<AI::SteeringModule>(*this);
 
@@ -79,6 +79,17 @@ void Enemy::Update(float deltaTime)
 		position.y += height;
 	if (position.y >= height)
 		position.y -= height;
+	if (X::IsMousePressed(X::Mouse::LBUTTON))
+	{
+		mDrawDebugLine = !mDrawDebugLine;
+		mWanderBehavior->drawDebugLine = !mWanderBehavior->drawDebugLine;
+	}
+	const X::Math::Circle& shipCircle = Ship::Get().GetCircle();
+	if (X::Math::Intersect(mCircle, shipCircle) || X::IsMouseDown(X::Mouse::RBUTTON))
+		mIsGameOver = true;
+	if (mIsGameOver)
+		X::DrawScreenText("Enemy Win", width / 2, height / 2, 55, X::Colors::Red);
+
 }
 
 void Enemy::Render()
@@ -86,6 +97,9 @@ void Enemy::Render()
 	const float angle = atan2(-heading.x, heading.y) + X::Math::kPi;
 	int frame = (int)(angle / X::Math::kTwoPi * std::size(mTextureIds)) % std::size(mTextureIds);
 	X::DrawSprite(mTextureIds[frame], position);
-	X::DrawScreenCircle(position, radius, X::Colors::Yellow);
-	X::DrawScreenCircle(position, mRange, X::Colors::White);
+	if (mDrawDebugLine)
+	{
+		X::DrawScreenCircle(position, radius, X::Colors::Yellow);
+		X::DrawScreenCircle(position, mRange, X::Colors::White);
+	}
 }

@@ -8,8 +8,8 @@ void GameInit()
 	PickupManager::StaticInitialize();
 	EnemyManager::StaticInitialize();
 	Ship::Get().Load();
-	EnemyManager::Get().SetEnemyiesCount(2);
-	PickupManager::Get().SetPickupsCount(15);
+	EnemyManager::Get().SetEnemyiesCount(1);
+	PickupManager::Get().SetPickupsCount(1);
 	PickupManager::Get().Load();
 	EnemyManager::Get().Load();
 }

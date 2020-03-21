@@ -1,4 +1,5 @@
 #include "EnemyManager.h"
+#include"Ship.h"
 namespace
 {
 	EnemyManager* sInstance = nullptr;
@@ -31,6 +32,7 @@ void EnemyManager::Load()
 		mEnemies.push_back(enemy);
 	}
 	mPositions.resize(mEnemies.size());
+	Ship::Get().ResizeDE(mEnemies.size());
 }
 
 void EnemyManager::Unload()

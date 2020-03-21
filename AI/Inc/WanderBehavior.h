@@ -11,7 +11,7 @@ namespace AI
 		float wanderDistance = 30.0f;
 		float wanderJitter = 10.0f;
 		float wanderRadius = 20.0f;
-
+		bool drawDebugLine = false;
 	private:
 		X::Math::Vector2 targetPos = X::Math::Vector2::Zero();
 	};

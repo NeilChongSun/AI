@@ -17,4 +17,6 @@ private:
 	X::Math::Vector2 mAcceleration;
 	X::TextureId mTextureId;
 	X::Math::Circle mCircle;
+	bool mDrawDebugLine = false;
+	AI::WanderBehavior* mWanderBehavior;
 };

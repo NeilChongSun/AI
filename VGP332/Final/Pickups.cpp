@@ -7,7 +7,8 @@ void Pickups::Load()
 	maxSpeed = 50.0f;
 	position = { X::RandomFloat(0.0f,width),X::RandomFloat(0.0f,height)};
 	mSteering = std::make_unique<AI::SteeringModule>(*this);
-	mSteering->AddBehavior<AI::WanderBehavior>("wander")->SetActive(true);
+	mWanderBehavior = mSteering->AddBehavior<AI::WanderBehavior>("wander");
+	mWanderBehavior->SetActive(true);
 	mTextureId = X::LoadTexture("bullet2.png");
 }
 
@@ -32,12 +33,18 @@ void Pickups::Update(float deltaTime)
 		position.y += height;
 	if (position.y >= height)
 		position.y -= height;
+	if (X::IsMousePressed(X::Mouse::LBUTTON))
+	{
+		mDrawDebugLine = !mDrawDebugLine;		
+		mWanderBehavior->drawDebugLine = !mWanderBehavior->drawDebugLine;
+	}
 }
 
 void Pickups::Render()
 {
 	X::DrawSprite(mTextureId, position);
-	X::DrawScreenCircle(position, radius,X::Colors::Green);
+	if (mDrawDebugLine)
+		X::DrawScreenCircle(position, radius,X::Colors::Green);
 }
 
 bool Pickups::Destroy()

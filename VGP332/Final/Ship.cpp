@@ -39,7 +39,6 @@ void Ship::Load()
 		sprintf_s(name, "interceptor_%02zu.png", i + 1);
 		mTextureIds[i] = X::LoadTexture(name);
 	}
-	mDistanceToEnemies.resize(2);
 }
 
 void Ship::Update(float deltaTime)
@@ -58,12 +57,18 @@ void Ship::Update(float deltaTime)
 		mDistanceToEnemies[i] = X::Math::Distance(mEnemiesPositions[i], position);
 		mEnemyMinIndex = std::min_element(mDistanceToEnemies.begin(), mDistanceToEnemies.end()) - mDistanceToEnemies.begin();
 		if (mRange >= mDistanceToEnemies[mEnemyMinIndex])
-			mIsSeek = false;			
+		{
+			mIsSeek = false;
+			mRange = 250.0f;
+		}
 		else
+		{
 			mIsSeek = true;
+			mRange = 200.0f;
+		}
 	}
 
-	if (!mPickupsPositions.empty()&&mIsSeek)
+	if (!mPickupsPositions.empty() && mIsSeek)
 	{
 		mSeekBehavior->SetActive(true);
 		mFleeBehavior->SetActive(false);
@@ -74,7 +79,7 @@ void Ship::Update(float deltaTime)
 		mPickupMinIndex = std::min_element(mDistanceToPickups.begin(), mDistanceToPickups.end()) - mDistanceToPickups.begin();
 		destination = mPickupsPositions[mPickupMinIndex];
 	}
-	else
+	else if(!mEnemiesPositions.empty()&&!mIsSeek)
 	{
 		mSeekBehavior->SetActive(false);
 		mFleeBehavior->SetActive(true);
@@ -92,6 +97,17 @@ void Ship::Update(float deltaTime)
 		position.y += height;
 	if (position.y >= height)
 		position.y -= height;
+
+	if (X::IsMousePressed(X::Mouse::LBUTTON))
+	{
+		mDrawDebugLine = !mDrawDebugLine;
+	}
+
+	if (mPickupsPositions.empty()|| X::IsMouseDown(X::Mouse::RBUTTON))
+	{
+		X::DrawScreenText("Player Win", width/2, height/2, 55, X::Colors::Green);
+	}
+
 }
 
 void Ship::Render()
@@ -99,11 +115,19 @@ void Ship::Render()
 	const float angle = atan2(-heading.x, heading.y) + X::Math::kPi;
 	int frame = (int)(angle / X::Math::kTwoPi * std::size(mTextureIds)) % std::size(mTextureIds);
 	X::DrawSprite(mTextureIds[frame], position);
-	X::DrawScreenCircle(position, radius, X::Colors::Blue);
-	X::DrawScreenCircle(position, mRange, X::Colors::Purple);
+	if (mDrawDebugLine)
+	{
+		X::DrawScreenCircle(position, radius, X::Colors::Blue);
+		X::DrawScreenCircle(position, mRange, X::Colors::Purple);
+	}
 }
 
-void Ship::Resize(int size)
+void Ship::ResizeDP(int size)
 {
 	mDistanceToPickups.resize(size);
+}
+
+void Ship::ResizeDE(int size)
+{
+	mDistanceToEnemies.resize(size);
 }

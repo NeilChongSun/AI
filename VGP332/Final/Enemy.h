@@ -28,4 +28,6 @@ private:
 	X::Math::Vector2 mShipPosition;
 	AI::WanderBehavior* mWanderBehavior;
 	AI::SeekBehavior* mSeekBehavior;
+	bool mDrawDebugLine = false;
+	bool mIsGameOver = false;
 };

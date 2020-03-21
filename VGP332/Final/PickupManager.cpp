@@ -33,7 +33,7 @@ void PickupManager::Load()
 		mPickups.push_back(pickup);		
 	}
 	mPositions.resize(mPickups.size());
-	Ship::Get().Resize(mPickups.size());
+	Ship::Get().ResizeDP(mPickups.size());
 }
 
 void PickupManager::Unload()
@@ -55,7 +55,7 @@ void PickupManager::Update(float deltaTime)
 			delete pickup;
 			iter = mPickups.erase(iter);
 			mPositions.resize(mPickups.size());
-			Ship::Get().Resize(mPickups.size());
+			Ship::Get().ResizeDP(mPickups.size());
 		}
 		else
 			++iter;

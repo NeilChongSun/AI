@@ -18,7 +18,8 @@ public:
 
 	const X::Math::Circle GetCircle() const { return mCircle; }
 	const X::Math::Vector2 GetPosition()const { return position; }
-	void Resize(int size);
+	void ResizeDP(int size);
+	void ResizeDE(int size);
 private:
 	std::unique_ptr<AI::SteeringModule> mSteering;
 	std::array<X::TextureId, 32> mTextureIds;
@@ -34,4 +35,5 @@ private:
 	int mEnemyMinIndex;
 	int mPickupMinIndex;
 	bool mIsSeek = true;
+	bool mDrawDebugLine = false;
 };
